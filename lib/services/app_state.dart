@@ -23,8 +23,12 @@ class AppState extends ChangeNotifier {
   List<MealEntry> get todayMeals {
     final now = DateTime.now();
     return meals
-        .where((m) =>
-            m.at.year == now.year && m.at.month == now.month && m.at.day == now.day)
+        .where(
+          (m) =>
+              m.at.year == now.year &&
+              m.at.month == now.month &&
+              m.at.day == now.day,
+        )
         .toList();
   }
 

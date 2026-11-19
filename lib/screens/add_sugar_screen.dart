@@ -69,7 +69,10 @@ class _AddSugarScreenState extends State<AddSugarScreen> {
                 if (status != null)
                   Text(
                     '${SugarHelpers.statusLabel(status)} ${SugarHelpers.statusEmoji(status)}',
-                    style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                    ),
                   ),
                 const SizedBox(height: 4),
                 const Text(
@@ -95,7 +98,10 @@ class _AddSugarScreenState extends State<AddSugarScreen> {
             leading: const Icon(Icons.access_time, color: AppColors.skyDark),
             title: const Text('التاريخ والوقت'),
             subtitle: Text(_format(_at)),
-            trailing: TextButton(onPressed: _pickDateTime, child: const Text('تغيير')),
+            trailing: TextButton(
+              onPressed: _pickDateTime,
+              child: const Text('تغيير'),
+            ),
           ),
           TextField(
             controller: _noteCtrl,
@@ -106,29 +112,53 @@ class _AddSugarScreenState extends State<AddSugarScreen> {
             ),
           ),
           const SizedBox(height: 16),
-          const Text('كيف تشعر؟', style: TextStyle(fontWeight: FontWeight.w600)),
+          const Text(
+            'كيف تشعر؟',
+            style: TextStyle(fontWeight: FontWeight.w600),
+          ),
           const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               for (final e in const [
-                (0, '😊'),
-                (1, '😐'),
-                (2, '😟'),
-                (3, '🤒'),
+                (0, '😊', 'كويس'),
+                (1, '😐', 'عادي'),
+                (2, '😟', 'تعبان'),
+                (3, '🤒', 'مريض'),
               ])
                 GestureDetector(
                   onTap: () => setState(() => _mood = e.$1),
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 180),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 8,
+                    ),
                     decoration: BoxDecoration(
                       color: _mood == e.$1 ? AppColors.skyLight : Colors.white,
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
-                        color: _mood == e.$1 ? AppColors.skyDark : Colors.grey.shade300,
+                        color: _mood == e.$1
+                            ? AppColors.skyDark
+                            : Colors.grey.shade300,
+                        width: _mood == e.$1 ? 1.6 : 1,
                       ),
                     ),
-                    child: Text(e.$2, style: const TextStyle(fontSize: 28)),
+                    child: Column(
+                      children: [
+                        Text(e.$2, style: const TextStyle(fontSize: 26)),
+                        Text(
+                          e.$3,
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: _mood == e.$1
+                                ? AppColors.skyDark
+                                : AppColors.textMuted,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
             ],
@@ -165,9 +195,9 @@ class _AddSugarScreenState extends State<AddSugarScreen> {
   Future<void> _save() async {
     final value = double.tryParse(_valueCtrl.text.trim());
     if (value == null || value <= 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('أدخل قيمة سكر صحيحة')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('أدخل قيمة سكر صحيحة')));
       return;
     }
     final state = context.read<AppState>();

@@ -18,101 +18,142 @@ class MoreScreen extends StatelessWidget {
     final p = state.profile!;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('المزيد')),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
-        children: [
-          SoftCard(
-            child: Row(
-              children: [
-                CircleAvatar(
-                  radius: 30,
-                  backgroundColor: AppColors.skyLight,
-                  child: Text(
-                    p.gender == Gender.male ? '👦' : '👧',
-                    style: const TextStyle(fontSize: 28),
-                  ),
-                ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(p.name, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                      Text('${p.age} سنة · ${p.diabetesType == DiabetesType.type1 ? 'النوع الأول' : 'النوع الثاني'}'),
-                      Text(
-                        'معامل الكارب: ${p.carbRatio}',
-                        style: const TextStyle(color: AppColors.skyDark, fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 100),
+          children: [
+            const ScreenHeader(
+              title: 'المزيد',
+              subtitle: 'الملف، التنبيهات، والإرشادات',
             ),
-          ),
-          const SizedBox(height: 12),
-          SoftCard(
-            child: Column(
-              children: [
-                ListTile(
-                  leading: const Icon(Icons.edit, color: AppColors.skyDark),
-                  title: const Text('تعديل الملف / معامل الكارب'),
-                  trailing: const Icon(Icons.chevron_left),
-                  onTap: () => _editProfile(context, p),
-                ),
-                const Divider(height: 1),
-                ListTile(
-                  leading: const Icon(Icons.notifications_active, color: AppColors.orange),
-                  title: const Text('المنبّه والتنبيهات'),
-                  trailing: const Icon(Icons.chevron_left),
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const RemindersScreen()),
+            SoftCard(
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: AppColors.skyLight,
+                    child: Text(
+                      p.gender == Gender.male ? '👦' : '👧',
+                      style: const TextStyle(fontSize: 28),
+                    ),
                   ),
-                ),
-                const Divider(height: 1),
-                ListTile(
-                  leading: const Icon(Icons.health_and_safety, color: AppColors.red),
-                  title: const Text('إرشادات الهبوط والارتفاع'),
-                  trailing: const Icon(Icons.chevron_left),
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const EmergencyGuidesScreen()),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          p.name,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          '${p.age} سنة · ${p.diabetesType == DiabetesType.type1 ? 'النوع الأول' : 'النوع الثاني'}',
+                        ),
+                        Text(
+                          'معامل الكارب: ${p.carbRatio}',
+                          style: const TextStyle(
+                            color: AppColors.skyDark,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                const Divider(height: 1),
-                ListTile(
-                  leading: const Icon(Icons.vaccines_outlined, color: AppColors.skyDark),
-                  title: const Text('أماكن الحقن'),
-                  subtitle: const Text('٤ مناطق ندوّر بينها'),
-                  trailing: const Icon(Icons.chevron_left),
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const InjectionSitesScreen()),
-                  ),
-                ),
-                const Divider(height: 1),
-                ListTile(
-                  leading: const Icon(Icons.logout, color: AppColors.red),
-                  title: const Text('مسح البيانات والبدء من جديد'),
-                  onTap: () async {
-                    final ok = await showDialog<bool>(
-                      context: context,
-                      builder: (ctx) => AlertDialog(
-                        title: const Text('تأكيد'),
-                        content: const Text('سيتم حذف الملف والقياسات والوجبات.'),
-                        actions: [
-                          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('إلغاء')),
-                          FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('حذف')),
-                        ],
-                      ),
-                    );
-                    if (ok == true && context.mounted) {
-                      await context.read<AppState>().logout();
-                    }
-                  },
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+            const SizedBox(height: 12),
+            SoftCard(
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.edit, color: AppColors.skyDark),
+                    title: const Text('تعديل الملف / معامل الكارب'),
+                    trailing: const Icon(Icons.chevron_left),
+                    onTap: () => _editProfile(context, p),
+                  ),
+                  const Divider(height: 1),
+                  ListTile(
+                    leading: const Icon(
+                      Icons.notifications_active,
+                      color: AppColors.orange,
+                    ),
+                    title: const Text('المنبّه والتنبيهات'),
+                    trailing: const Icon(Icons.chevron_left),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const RemindersScreen(),
+                      ),
+                    ),
+                  ),
+                  const Divider(height: 1),
+                  ListTile(
+                    leading: const Icon(
+                      Icons.health_and_safety,
+                      color: AppColors.red,
+                    ),
+                    title: const Text('إرشادات الهبوط والارتفاع'),
+                    trailing: const Icon(Icons.chevron_left),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const EmergencyGuidesScreen(),
+                      ),
+                    ),
+                  ),
+                  const Divider(height: 1),
+                  ListTile(
+                    leading: const Icon(
+                      Icons.vaccines_outlined,
+                      color: AppColors.skyDark,
+                    ),
+                    title: const Text('أماكن الحقن'),
+                    subtitle: const Text('٤ مناطق ندوّر بينها'),
+                    trailing: const Icon(Icons.chevron_left),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const InjectionSitesScreen(),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+            SoftCard(
+              color: AppColors.redSoft,
+              child: ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.logout, color: AppColors.red),
+                title: const Text('مسح البيانات والبدء من جديد'),
+                onTap: () async {
+                  final ok = await showDialog<bool>(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                      title: const Text('تأكيد'),
+                      content: const Text('سيتم حذف الملف والقياسات والوجبات.'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(ctx, false),
+                          child: const Text('إلغاء'),
+                        ),
+                        FilledButton(
+                          onPressed: () => Navigator.pop(ctx, true),
+                          child: const Text('حذف'),
+                        ),
+                      ],
+                    ),
+                  );
+                  if (ok == true && context.mounted) {
+                    await context.read<AppState>().logout();
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -145,9 +186,18 @@ class MoreScreen extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text('تعديل الملف', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    const Text(
+                      'تعديل الملف',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     const SizedBox(height: 12),
-                    TextField(controller: nameCtrl, decoration: const InputDecoration(labelText: 'الاسم')),
+                    TextField(
+                      controller: nameCtrl,
+                      decoration: const InputDecoration(labelText: 'الاسم'),
+                    ),
                     const SizedBox(height: 8),
                     TextField(
                       controller: ageCtrl,
@@ -157,8 +207,12 @@ class MoreScreen extends StatelessWidget {
                     const SizedBox(height: 8),
                     TextField(
                       controller: ratioCtrl,
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                      decoration: const InputDecoration(labelText: 'معامل الكارب'),
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      decoration: const InputDecoration(
+                        labelText: 'معامل الكارب',
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Row(
@@ -167,11 +221,20 @@ class MoreScreen extends StatelessWidget {
                           child: DropdownButtonFormField<Gender>(
                             initialValue: gender,
                             items: const [
-                              DropdownMenuItem(value: Gender.male, child: Text('ذكر')),
-                              DropdownMenuItem(value: Gender.female, child: Text('أنثى')),
+                              DropdownMenuItem(
+                                value: Gender.male,
+                                child: Text('ذكر'),
+                              ),
+                              DropdownMenuItem(
+                                value: Gender.female,
+                                child: Text('أنثى'),
+                              ),
                             ],
-                            onChanged: (v) => setModal(() => gender = v ?? gender),
-                            decoration: const InputDecoration(labelText: 'النوع'),
+                            onChanged: (v) =>
+                                setModal(() => gender = v ?? gender),
+                            decoration: const InputDecoration(
+                              labelText: 'النوع',
+                            ),
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -179,11 +242,19 @@ class MoreScreen extends StatelessWidget {
                           child: DropdownButtonFormField<DiabetesType>(
                             initialValue: type,
                             items: const [
-                              DropdownMenuItem(value: DiabetesType.type1, child: Text('نوع 1')),
-                              DropdownMenuItem(value: DiabetesType.type2, child: Text('نوع 2')),
+                              DropdownMenuItem(
+                                value: DiabetesType.type1,
+                                child: Text('نوع 1'),
+                              ),
+                              DropdownMenuItem(
+                                value: DiabetesType.type2,
+                                child: Text('نوع 2'),
+                              ),
                             ],
                             onChanged: (v) => setModal(() => type = v ?? type),
-                            decoration: const InputDecoration(labelText: 'السكري'),
+                            decoration: const InputDecoration(
+                              labelText: 'السكري',
+                            ),
                           ),
                         ),
                       ],
@@ -216,7 +287,10 @@ class MoreScreen extends StatelessWidget {
                       onPressed: () {
                         final age = int.tryParse(ageCtrl.text);
                         final ratio = double.tryParse(ratioCtrl.text);
-                        if (nameCtrl.text.trim().isEmpty || age == null || ratio == null || ratio <= 0) {
+                        if (nameCtrl.text.trim().isEmpty ||
+                            age == null ||
+                            ratio == null ||
+                            ratio <= 0) {
                           return;
                         }
                         Navigator.pop(

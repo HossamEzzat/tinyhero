@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../theme/app_theme.dart';
 import 'home_screen.dart';
 import 'meals_screen.dart';
@@ -38,20 +39,15 @@ class _ShellScreenState extends State<ShellScreen> {
     return Scaffold(
       body: IndexedStack(
         index: _index == 2 ? 0 : _index,
-        children: [
-          pages[0],
-          pages[1],
-          pages[0],
-          pages[3],
-          pages[4],
-        ],
+        children: [pages[0], pages[1], pages[0], pages[3], pages[4]],
       ),
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
         notchMargin: 8,
-        elevation: 10,
+        color: Colors.white,
+        elevation: 12,
         child: SizedBox(
-          height: 62,
+          height: 64,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -67,8 +63,10 @@ class _ShellScreenState extends State<ShellScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.skyDark,
+        elevation: 4,
+        tooltip: 'إضافة',
         onPressed: _showAddSheet,
-        child: const Icon(Icons.add, color: Colors.white),
+        child: const Icon(Icons.add, color: Colors.white, size: 30),
       ),
     );
   }
@@ -76,13 +74,28 @@ class _ShellScreenState extends State<ShellScreen> {
   Widget _navItem(int i, IconData icon, String label) {
     final selected = _index == i;
     return InkWell(
-      onTap: () => setState(() => _index = i),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      borderRadius: BorderRadius.circular(16),
+      onTap: () {
+        if (_index == i) return;
+        HapticFeedback.selectionClick();
+        setState(() => _index = i);
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 220),
+        curve: Curves.easeOut,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        decoration: BoxDecoration(
+          color: selected ? AppColors.skyLight : Colors.transparent,
+          borderRadius: BorderRadius.circular(16),
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, color: selected ? AppColors.skyDark : AppColors.textMuted),
+            Icon(
+              icon,
+              size: 22,
+              color: selected ? AppColors.skyDark : AppColors.textMuted,
+            ),
             const SizedBox(height: 2),
             Text(
               label,
@@ -130,6 +143,7 @@ class _ShellScreenState extends State<ShellScreen> {
                   child: Icon(Icons.bloodtype, color: AppColors.skyDark),
                 ),
                 title: const Text('قياس سكر'),
+                subtitle: const Text('سجّل الرقم، الوقت، والمزاج'),
                 onTap: () {
                   Navigator.pop(ctx);
                   _open(const AddSugarScreen());
@@ -141,6 +155,7 @@ class _ShellScreenState extends State<ShellScreen> {
                   child: Icon(Icons.calculate, color: AppColors.orange),
                 ),
                 title: const Text('حاسبة الأنسولين'),
+                subtitle: const Text('كارب الوجبة يتحوّل لوحدات'),
                 onTap: () {
                   Navigator.pop(ctx);
                   _open(const InsulinCalculatorScreen());
@@ -149,9 +164,13 @@ class _ShellScreenState extends State<ShellScreen> {
               ListTile(
                 leading: const CircleAvatar(
                   backgroundColor: AppColors.greenSoft,
-                  child: Icon(Icons.notifications_active, color: AppColors.green),
+                  child: Icon(
+                    Icons.notifications_active,
+                    color: AppColors.green,
+                  ),
                 ),
                 title: const Text('المنبّه والتنبيهات'),
+                subtitle: const Text('تفضيلات داخل التطبيق، من غير رنين'),
                 onTap: () {
                   Navigator.pop(ctx);
                   _open(const RemindersScreen());

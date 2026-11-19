@@ -106,7 +106,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   },
                 ),
                 const SizedBox(height: 16),
-                const Text('النوع', style: TextStyle(fontWeight: FontWeight.w600)),
+                const Text(
+                  'النوع',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
                 const SizedBox(height: 8),
                 Row(
                   children: [
@@ -128,7 +131,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ],
                 ),
                 const SizedBox(height: 16),
-                const Text('نوع السكري', style: TextStyle(fontWeight: FontWeight.w600)),
+                const Text(
+                  'نوع السكري',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
                 const SizedBox(height: 8),
                 Row(
                   children: [
@@ -152,7 +158,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _ratioCtrl,
-                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
                   decoration: const InputDecoration(
                     labelText: 'معامل الكارب (جرام / وحدة أنسولين)',
                     helperText: 'مثال: 10 يعني كل 10 جرام كارب = وحدة أنسولين',

@@ -18,12 +18,21 @@ class RemindersScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          const SoftCard(
+            color: AppColors.skyLight,
+            child: Text(
+              'المنبّه هنا مش بيرن. دول تفضيلات داخل التطبيق بس، من غير صوت ومن غير إشعار على الموبايل.',
+              style: TextStyle(height: 1.45),
+            ),
+          ),
+          const SizedBox(height: 12),
           SoftCard(
             child: Column(
               children: [
                 SwitchListTile(
                   value: r.basalInsulin,
-                  onChanged: (v) => state.updateReminders(r.copyWith(basalInsulin: v)),
+                  onChanged: (v) =>
+                      state.updateReminders(r.copyWith(basalInsulin: v)),
                   title: const Text('الأنسولين القاعدي'),
                   subtitle: Text('الموعد: ${state.profile?.basalTime ?? '—'}'),
                   secondary: const Icon(Icons.alarm, color: AppColors.orange),
@@ -31,25 +40,36 @@ class RemindersScreen extends StatelessWidget {
                 const Divider(),
                 SwitchListTile(
                   value: r.sugarCheck,
-                  onChanged: (v) => state.updateReminders(r.copyWith(sugarCheck: v)),
+                  onChanged: (v) =>
+                      state.updateReminders(r.copyWith(sugarCheck: v)),
                   title: const Text('قياس السكر'),
                   subtitle: const Text('تذكير دوري خلال اليوم'),
-                  secondary: const Icon(Icons.bloodtype, color: AppColors.skyDark),
+                  secondary: const Icon(
+                    Icons.bloodtype,
+                    color: AppColors.skyDark,
+                  ),
                 ),
                 const Divider(),
                 SwitchListTile(
                   value: r.afterMeal,
-                  onChanged: (v) => state.updateReminders(r.copyWith(afterMeal: v)),
+                  onChanged: (v) =>
+                      state.updateReminders(r.copyWith(afterMeal: v)),
                   title: const Text('بعد الأكل'),
                   subtitle: const Text('قياس السكر بعد الوجبة'),
-                  secondary: const Icon(Icons.restaurant, color: AppColors.green),
+                  secondary: const Icon(
+                    Icons.restaurant,
+                    color: AppColors.green,
+                  ),
                 ),
                 const Divider(),
                 SwitchListTile(
                   value: r.water,
                   onChanged: (v) => state.updateReminders(r.copyWith(water: v)),
                   title: const Text('شرب المياه'),
-                  secondary: const Icon(Icons.water_drop, color: Colors.lightBlue),
+                  secondary: const Icon(
+                    Icons.water_drop,
+                    color: Colors.lightBlue,
+                  ),
                 ),
                 const Divider(),
                 SwitchListTile(
@@ -66,7 +86,10 @@ class RemindersScreen extends StatelessWidget {
                       state.updateReminders(r.copyWith(sugarFluctuation: v)),
                   title: const Text('تنبيه ذبذبة السكر'),
                   subtitle: const Text('تذكير بمخاطر الصعود والهبوط المفاجئ'),
-                  secondary: const Icon(Icons.warning_amber_rounded, color: AppColors.red),
+                  secondary: const Icon(
+                    Icons.warning_amber_rounded,
+                    color: AppColors.red,
+                  ),
                 ),
               ],
             ),
@@ -88,9 +111,18 @@ class RemindersScreen extends StatelessWidget {
                     style: TextStyle(height: 1.45),
                   ),
                   SizedBox(height: 8),
-                  Text('• قيس بانتظام وما تستناش الأعراض بس.', style: TextStyle(height: 1.4)),
-                  Text('• بعد الرياضة أو الأكل السكري راقب أكتر.', style: TextStyle(height: 1.4)),
-                  Text('• لو في هبوط/ارتفاع متكرر: راجع الخطة مع الطبيب.', style: TextStyle(height: 1.4)),
+                  Text(
+                    '• قيس بانتظام وما تستناش الأعراض بس.',
+                    style: TextStyle(height: 1.4),
+                  ),
+                  Text(
+                    '• بعد الرياضة أو الأكل السكري راقب أكتر.',
+                    style: TextStyle(height: 1.4),
+                  ),
+                  Text(
+                    '• لو في هبوط/ارتفاع متكرر: راجع الخطة مع الطبيب.',
+                    style: TextStyle(height: 1.4),
+                  ),
                 ],
               ),
             ),

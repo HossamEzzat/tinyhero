@@ -50,22 +50,22 @@ class ChildProfile {
   }
 
   Map<String, dynamic> toJson() => {
-        'name': name,
-        'age': age,
-        'gender': gender.name,
-        'diabetesType': diabetesType.name,
-        'carbRatio': carbRatio,
-        'basalTime': basalTime,
-      };
+    'name': name,
+    'age': age,
+    'gender': gender.name,
+    'diabetesType': diabetesType.name,
+    'carbRatio': carbRatio,
+    'basalTime': basalTime,
+  };
 
   factory ChildProfile.fromJson(Map<String, dynamic> json) => ChildProfile(
-        name: json['name'] as String,
-        age: json['age'] as int,
-        gender: Gender.values.byName(json['gender'] as String),
-        diabetesType: DiabetesType.values.byName(json['diabetesType'] as String),
-        carbRatio: (json['carbRatio'] as num).toDouble(),
-        basalTime: json['basalTime'] as String?,
-      );
+    name: json['name'] as String,
+    age: json['age'] as int,
+    gender: Gender.values.byName(json['gender'] as String),
+    diabetesType: DiabetesType.values.byName(json['diabetesType'] as String),
+    carbRatio: (json['carbRatio'] as num).toDouble(),
+    basalTime: json['basalTime'] as String?,
+  );
 }
 
 class SugarReading {
@@ -90,20 +90,20 @@ class SugarReading {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'value': value,
-        'at': at.toIso8601String(),
-        'note': note,
-        'mood': mood,
-      };
+    'id': id,
+    'value': value,
+    'at': at.toIso8601String(),
+    'note': note,
+    'mood': mood,
+  };
 
   factory SugarReading.fromJson(Map<String, dynamic> json) => SugarReading(
-        id: json['id'] as String,
-        value: (json['value'] as num).toDouble(),
-        at: DateTime.parse(json['at'] as String),
-        note: json['note'] as String?,
-        mood: json['mood'] as int?,
-      );
+    id: json['id'] as String,
+    value: (json['value'] as num).toDouble(),
+    at: DateTime.parse(json['at'] as String),
+    note: json['note'] as String?,
+    mood: json['mood'] as int?,
+  );
 }
 
 class MealEntry {
@@ -128,14 +128,14 @@ class MealEntry {
   double get totalCarbs => carbPerGram * grams;
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'foodName': foodName,
-        'category': category.name,
-        'carbPerGram': carbPerGram,
-        'grams': grams,
-        'at': at.toIso8601String(),
-        'insulinUnits': insulinUnits,
-      };
+    'id': id,
+    'foodName': foodName,
+    'category': category.name,
+    'carbPerGram': carbPerGram,
+    'grams': grams,
+    'at': at.toIso8601String(),
+    'insulinUnits': insulinUnits,
+  };
 
   factory MealEntry.fromJson(Map<String, dynamic> json) {
     final raw = json['category'] as String;
@@ -202,15 +202,16 @@ class ReminderSettings {
   }
 
   Map<String, dynamic> toJson() => {
-        'basalInsulin': basalInsulin,
-        'sugarCheck': sugarCheck,
-        'afterMeal': afterMeal,
-        'water': water,
-        'labs': labs,
-        'sugarFluctuation': sugarFluctuation,
-      };
+    'basalInsulin': basalInsulin,
+    'sugarCheck': sugarCheck,
+    'afterMeal': afterMeal,
+    'water': water,
+    'labs': labs,
+    'sugarFluctuation': sugarFluctuation,
+  };
 
-  factory ReminderSettings.fromJson(Map<String, dynamic> json) => ReminderSettings(
+  factory ReminderSettings.fromJson(Map<String, dynamic> json) =>
+      ReminderSettings(
         basalInsulin: json['basalInsulin'] as bool? ?? true,
         sugarCheck: json['sugarCheck'] as bool? ?? true,
         afterMeal: json['afterMeal'] as bool? ?? true,

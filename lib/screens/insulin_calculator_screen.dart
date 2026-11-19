@@ -12,7 +12,7 @@ class _MealLine {
   final TextEditingController gramsCtrl;
 
   _MealLine({this.food, String grams = '100'})
-      : gramsCtrl = TextEditingController(text: grams);
+    : gramsCtrl = TextEditingController(text: grams);
 
   double get grams => double.tryParse(gramsCtrl.text) ?? 0;
   double get carbs => (food?.carbPerGram ?? 0) * grams;
@@ -24,7 +24,8 @@ class InsulinCalculatorScreen extends StatefulWidget {
   const InsulinCalculatorScreen({super.key});
 
   @override
-  State<InsulinCalculatorScreen> createState() => _InsulinCalculatorScreenState();
+  State<InsulinCalculatorScreen> createState() =>
+      _InsulinCalculatorScreenState();
 }
 
 class _InsulinCalculatorScreenState extends State<InsulinCalculatorScreen>
@@ -55,8 +56,7 @@ class _InsulinCalculatorScreenState extends State<InsulinCalculatorScreen>
 
   double get _totalCarbs => _lines.fold(0.0, (sum, l) => sum + l.carbs);
 
-  bool get _canSave =>
-      _lines.any((l) => l.food != null && l.grams > 0);
+  bool get _canSave => _lines.any((l) => l.food != null && l.grams > 0);
 
   @override
   Widget build(BuildContext context) {
@@ -78,10 +78,7 @@ class _InsulinCalculatorScreenState extends State<InsulinCalculatorScreen>
       ),
       body: TabBarView(
         controller: _tabs,
-        children: [
-          _mealTab(ratio),
-          _manualTab(ratio),
-        ],
+        children: [_mealTab(ratio), _manualTab(ratio)],
       ),
     );
   }
@@ -194,7 +191,10 @@ class _InsulinCalculatorScreenState extends State<InsulinCalculatorScreen>
                         _lines.removeAt(index);
                       });
                     },
-                    icon: const Icon(Icons.delete_outline, color: AppColors.red),
+                    icon: const Icon(
+                      Icons.delete_outline,
+                      color: AppColors.red,
+                    ),
                   ),
               ],
             ),
@@ -222,7 +222,9 @@ class _InsulinCalculatorScreenState extends State<InsulinCalculatorScreen>
             const SizedBox(height: 10),
             TextField(
               controller: line.gramsCtrl,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
               decoration: const InputDecoration(
                 labelText: 'الوزن (جرام)',
                 prefixIcon: Icon(Icons.scale),
@@ -353,7 +355,11 @@ class _InsulinCalculatorScreenState extends State<InsulinCalculatorScreen>
     );
   }
 
-  Future<void> _saveMealLines(double totalCarbs, double units, double ratio) async {
+  Future<void> _saveMealLines(
+    double totalCarbs,
+    double units,
+    double ratio,
+  ) async {
     final state = context.read<AppState>();
     final now = DateTime.now();
     final filled = _lines.where((l) => l.food != null && l.grams > 0).toList();
@@ -362,7 +368,10 @@ class _InsulinCalculatorScreenState extends State<InsulinCalculatorScreen>
       for (final line in filled) {
         final food = line.food!;
         final itemCarbs = line.carbs;
-        final itemUnits = InsulinCalculator.unitsFromTotalCarbs(itemCarbs, ratio);
+        final itemUnits = InsulinCalculator.unitsFromTotalCarbs(
+          itemCarbs,
+          ratio,
+        );
         await state.addMeal(
           MealEntry(
             id: state.newId(),
@@ -514,7 +523,9 @@ class _FoodPickerSheetState extends State<_FoodPickerSheet> {
                             style: const TextStyle(fontSize: 24),
                           ),
                           title: Text(f.name),
-                          subtitle: Text(FoodDatabase.categoryLabel(f.category)),
+                          subtitle: Text(
+                            FoodDatabase.categoryLabel(f.category),
+                          ),
                           trailing: Text(
                             FoodDatabase.carbLabel(f),
                             style: const TextStyle(

@@ -150,8 +150,17 @@ class _GuideHeader extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-              Text(subtitle, style: const TextStyle(color: AppColors.textMuted)),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                subtitle,
+                style: const TextStyle(color: AppColors.textMuted),
+              ),
             ],
           ),
         ),
@@ -223,11 +232,19 @@ class _GuideDetail extends StatelessWidget {
                           backgroundColor: accent,
                           child: Text(
                             '${e.key + 1}',
-                            style: const TextStyle(color: Colors.white, fontSize: 12),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
                           ),
                         ),
                         const SizedBox(width: 10),
-                        Expanded(child: Text(e.value, style: const TextStyle(height: 1.4))),
+                        Expanded(
+                          child: Text(
+                            e.value,
+                            style: const TextStyle(height: 1.4),
+                          ),
+                        ),
                       ],
                     ),
                   ),

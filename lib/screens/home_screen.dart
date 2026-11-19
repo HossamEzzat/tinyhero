@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -34,44 +36,58 @@ class HomeScreen extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 100),
           children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: 24,
-                  backgroundColor: AppColors.skyLight,
-                  child: Text(
-                    profile.gender == Gender.male ? '👦' : '👧',
-                    style: const TextStyle(fontSize: 22),
-                  ),
+            Container(
+              padding: const EdgeInsets.fromLTRB(14, 12, 8, 12),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF4FC3F7), Color(0xFF0288D1)],
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'أهلاً ${profile.name}',
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                borderRadius: BorderRadius.circular(24),
+              ),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 24,
+                    backgroundColor: Colors.white.withValues(alpha: 0.22),
+                    child: Text(
+                      profile.gender == Gender.male ? '👦' : '👧',
+                      style: const TextStyle(fontSize: 22),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'أهلاً ${profile.name}',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                      Text(
-                        profile.diabetesType == DiabetesType.type1
-                            ? 'سكري النوع الأول'
-                            : 'سكري النوع الثاني',
-                        style: const TextStyle(color: AppColors.textMuted),
-                      ),
-                    ],
+                        Text(
+                          profile.diabetesType == DiabetesType.type1
+                              ? 'سكري النوع الأول'
+                              : 'سكري النوع الثاني',
+                          style: const TextStyle(color: Colors.white70),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                IconButton(
-                  onPressed: onEmergency,
-                  icon: const Icon(Icons.health_and_safety_outlined,
-                      color: AppColors.red),
-                  tooltip: 'إرشادات الطوارئ',
-                ),
-              ],
+                  IconButton(
+                    onPressed: onEmergency,
+                    tooltip: 'إرشادات الطوارئ',
+                    icon: const Icon(
+                      Icons.health_and_safety_outlined,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 16),
             SoftCard(
@@ -83,12 +99,26 @@ class HomeScreen extends StatelessWidget {
                     style: TextStyle(color: AppColors.textMuted),
                   ),
                   const SizedBox(height: 8),
-                  if (reading == null)
+                  if (reading == null) ...[
                     const Text(
-                      '—',
-                      style: TextStyle(fontSize: 42, fontWeight: FontWeight.bold),
-                    )
-                  else ...[
+                      'لسه مفيش قياس',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      'سجّل أول قراءة عشان اليوم يبقى واضح',
+                      style: TextStyle(color: AppColors.textMuted),
+                    ),
+                    const SizedBox(height: 12),
+                    FilledButton.icon(
+                      onPressed: onQuickAdd,
+                      icon: const Icon(Icons.add),
+                      label: const Text('سجّل قياس'),
+                    ),
+                  ] else ...[
                     Text(
                       reading.value.toStringAsFixed(0),
                       style: TextStyle(
@@ -106,8 +136,17 @@ class HomeScreen extends StatelessWidget {
                         color: _statusColor(reading.status),
                       ),
                     ),
+                    const SizedBox(height: 4),
+                    Text(
+                      _formatWhen(reading.at),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppColors.textMuted,
+                      ),
+                    ),
                   ],
-                  if (reading != null && reading.status != SugarStatus.normal) ...[
+                  if (reading != null &&
+                      reading.status != SugarStatus.normal) ...[
                     const SizedBox(height: 10),
                     TextButton.icon(
                       onPressed: onEmergency,
@@ -178,13 +217,7 @@ class HomeScreen extends StatelessWidget {
                           'الموعد: ${profile.basalTime ?? '—'}',
                           style: const TextStyle(color: AppColors.textMuted),
                         ),
-                        Text(
-                          _basalCountdown(profile.basalTime),
-                          style: const TextStyle(
-                            color: AppColors.orange,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                        BasalCountdown(hhmm: profile.basalTime),
                       ],
                     ),
                   ),
@@ -201,7 +234,10 @@ class HomeScreen extends StatelessWidget {
                   Expanded(
                     child: Text(
                       state.motivation,
-                      style: const TextStyle(height: 1.4, fontWeight: FontWeight.w600),
+                      style: const TextStyle(
+                        height: 1.4,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],
@@ -233,30 +269,75 @@ class HomeScreen extends StatelessWidget {
   }
 
   Color _statusColor(SugarStatus? s) => switch (s) {
-        SugarStatus.low => AppColors.yellow,
-        SugarStatus.high => AppColors.red,
-        SugarStatus.normal => AppColors.green,
-        null => AppColors.text,
-      };
+    SugarStatus.low => const Color(0xFFF9A825),
+    SugarStatus.high => AppColors.red,
+    SugarStatus.normal => AppColors.green,
+    null => AppColors.text,
+  };
+
+  String _formatWhen(DateTime at) {
+    final now = DateTime.now();
+    final sameDay =
+        now.year == at.year && now.month == at.month && now.day == at.day;
+    final time =
+        '${at.hour.toString().padLeft(2, '0')}:${at.minute.toString().padLeft(2, '0')}';
+    if (sameDay) return 'النهاردة $time';
+    return '${at.day}/${at.month} · $time';
+  }
 
   Color _statusBg(SugarStatus? s) => switch (s) {
-        SugarStatus.low => AppColors.yellowSoft,
-        SugarStatus.high => AppColors.redSoft,
-        SugarStatus.normal => AppColors.greenSoft,
-        null => AppColors.card,
-      };
+    SugarStatus.low => AppColors.yellowSoft,
+    SugarStatus.high => AppColors.redSoft,
+    SugarStatus.normal => AppColors.greenSoft,
+    null => AppColors.card,
+  };
+}
 
-  String _basalCountdown(String? hhmm) {
+class BasalCountdown extends StatefulWidget {
+  const BasalCountdown({super.key, required this.hhmm});
+
+  final String? hhmm;
+
+  @override
+  State<BasalCountdown> createState() => _BasalCountdownState();
+}
+
+class _BasalCountdownState extends State<BasalCountdown> {
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted) setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      _label(widget.hhmm),
+      style: const TextStyle(
+        color: AppColors.orange,
+        fontWeight: FontWeight.w600,
+      ),
+    );
+  }
+
+  String _label(String? hhmm) {
     if (hhmm == null || !hhmm.contains(':')) return 'حدّد الموعد من الملف';
     final parts = hhmm.split(':');
+    final hour = int.tryParse(parts[0]);
+    final minute = int.tryParse(parts[1]);
+    if (hour == null || minute == null) return 'حدّد الموعد من الملف';
     final now = DateTime.now();
-    var target = DateTime(
-      now.year,
-      now.month,
-      now.day,
-      int.parse(parts[0]),
-      int.parse(parts[1]),
-    );
+    var target = DateTime(now.year, now.month, now.day, hour, minute);
     if (!target.isAfter(now)) {
       target = target.add(const Duration(days: 1));
     }
